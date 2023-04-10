@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  jenkins-server:
+    image: jenkins/jenkins:lts-alpine
+    container_name: jenkins
+    build: .
+    restart: always
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - /home/bishop/workspace/jenkins-learn/jenkins_home:/var/jenkins_home
+      - /home/bishop/workspace/jenkins-learn/jenkins_docker_certs:/certs/client:ro
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    networks:
+      - jenkins
+  jenkins-agent:
+    image: bishopplusplus/docker-agent-alpine-socat:latest
+    container_name: jenkins_agent
+    build: .
+    restart: always
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 127.0.0.1:2376:2375
+    networks:
+      - jenkins
+    command: sh -c "socat tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock"
+networks:
+  jenkins:
+    name: jenkins
