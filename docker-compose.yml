@@ -13,7 +13,7 @@ services:
       - /home/bishop/workspace/jenkins-learn/jenkins_home:/var/jenkins_home
       - /home/bishop/workspace/jenkins-learn/jenkins_docker_certs:/certs/client:ro
     ports:
-      - "8080:8080"
+      - "41001:8080"
       - "50000:50000"
     networks:
       - jenkins
