@@ -17,9 +17,9 @@ services:
       - "50000:50000"
     networks:
       - jenkins
-  jenkins-agent:
-    image: bishopplusplus/docker-agent-alpine-socat:latest
-    container_name: jenkins_agent
+  jenkins-worker:
+    image: alpine/socat
+    container_name: jenkins_worker
     build: .
     restart: always
     environment:
@@ -30,9 +30,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 127.0.0.1:2376:2375
+      - 3000:8080
     networks:
       - jenkins
-    command: sh -c "socat tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock"
+    user: root
+    command: "tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock"
 networks:
   jenkins:
     name: jenkins
