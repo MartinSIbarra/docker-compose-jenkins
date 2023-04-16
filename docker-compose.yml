@@ -3,7 +3,7 @@ services:
   jenkins-server:
     image: jenkins/jenkins:lts-alpine
     container_name: jenkins
-    build: .
+    user: "$UID:$GID"
     restart: always
     environment:
       - DOCKER_HOST=tcp://docker:2376
@@ -20,7 +20,6 @@ services:
   jenkins-worker:
     image: alpine/socat
     container_name: jenkins_worker
-    build: .
     restart: always
     environment:
       - DOCKER_HOST=tcp://docker:2376
