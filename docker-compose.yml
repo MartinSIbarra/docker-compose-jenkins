@@ -3,7 +3,7 @@ services:
   jenkins-server:
     image: jenkins/jenkins:lts-alpine
     container_name: jenkins
-    user: $UID:$GID
+    user: ${UID_GID}
     restart: always
     environment:
       - DOCKER_HOST=tcp://docker:2376
