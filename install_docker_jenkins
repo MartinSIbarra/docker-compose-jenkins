@@ -1,0 +1,27 @@
+#!/bin/bash
+JENKINS_PATH=/$HOME/Jenkins
+
+mkdir $JENKINS_PATH
+wget https://raw.githubusercontent.com/MartinSIbarra/docker-compose-jenkins/main/docker-compose.yml -P $JENKINS_PATH
+
+# Creating executable files to start and halt Jenkins with Docker Compose
+rm /$HOME/bin/jenkins-up /$HOME/bin/jenkins-down 
+
+export JENKINS_HOME=$JENKINS_PATH/jenkins_home
+export JENKINS_DOCKER_CERTS=$JENKINS_PATH/jenkins_docker_certs
+
+echo "export JENKINS_HOME=$JENKINS_PATH/jenkins_home" >> $HOME/bin/jenkins-up 
+echo "export JENKINS_DOCKER_CERTS=$JENKINS_PATH/jenkins_docker_certs" >> $HOME/bin/jenkins-up 
+echo "docker compose -f $JENKINS_PATH/docker-compose.yml up -d" >> $HOME/bin/jenkins-up 
+
+echo "export JENKINS_HOME=$JENKINS_PATH/jenkins_home" >> $HOME/bin/jenkins-down
+echo "export JENKINS_DOCKER_CERTS=$JENKINS_PATH/jenkins_docker_certs" >> $HOME/bin/jenkins-down
+echo "docker compose -f $JENKINS_PATH/docker-compose.yml down" >> $HOME/bin/jenkins-down
+
+chmod +x /$HOME/bin/jenkins-up /$HOME/bin/jenkins-down
+
+# Building Jenkins to init
+docker compose -f $JENKINS_PATH/docker-compose.yml up -d --build
+docker compose -f $JENKINS_PATH/docker-compose.yml down
+
+echo "Now you can use 'jenkins-up' to start and 'jenkins-down' to shutdown, Jenkins... Enjoy! :D"
