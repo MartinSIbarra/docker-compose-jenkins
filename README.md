@@ -1,8 +1,14 @@
 # Jenkins via Docker Compose
 A docker compose file to install, in a Docker container, Jenkins and Socat Agent (to automaticaly deploy Docker images) **on linux**.
 
+## Pre-requisites
+### Docker
+- [How to install Docker](https://docs.docker.com/engine/install/)
+### Curl
+- [How to install Curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux)
+
 ## Setup
-Simply run this command (you need curl installed in your system -> [how to install curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux))
+Simply run this command:
 ```
 curl https://raw.githubusercontent.com/MartinSIbarra/docker-compose-jenkins/main/install_docker_jenkins | bash
 ```
@@ -26,4 +32,5 @@ You will need to provide the initial administrator password. To do this you have
 ```
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
+
 Now you can start using Jenkis! Enjoy!
